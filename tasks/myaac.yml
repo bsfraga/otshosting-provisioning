@@ -19,7 +19,7 @@
     line: "	'friendly_urls' => true,"
 
 - name: Import MyAAC database schema
- mysql_db:
+  mysql_db:
    name: forgottenserver
    state: import
    target: /home/otsmanager/www/public_html/install/includes/schema.sql

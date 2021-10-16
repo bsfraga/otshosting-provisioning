@@ -27,6 +27,9 @@
 - name: Download VCPKG
   git:
     repo: https://github.com/microsoft/vcpkg.git
+    dest: /home/otsmanager/vcpkg
+  become: true
+  become_user: otsmanager
 
 - name: Execute vcpkg.sh
   shell: /home/otsmanager/vcpkg/bootstrap-vcpkg.sh
@@ -43,8 +46,6 @@
   git:
     repo: https://github.com/opentibiabr/otservbr-global.git
     dest: /home/otsmanager/forgottenserver
-  become: true
-  become_user: otsmanager
 
 - name: Parse existing config.lua
   shell: grep -s mysqlPass /home/otsmanager/forgottenserver/config.lua | sed -E 's/mysqlPass = "(.*)"/\1/g'
@@ -70,6 +71,9 @@
     password: "{{mysql_forgottenserver_pass}}"
     priv: forgottenserver.*:ALL
     check_implicit_admin: yes
+
+#create database for TFS if not exists
+
 
 - name: Create database for TFS
   mysql_db:

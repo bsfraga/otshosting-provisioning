@@ -12,10 +12,24 @@
       - libboost-filesystem-dev
       - libboost-iostreams-dev
       - libcrypto++-dev
-      - liblua5.2-dev
+      - liblua5.1-dev
       - libluajit-5.1-dev
       - libpugixml-dev
       - libfmt-dev
+      - pkg-config
+      - zip
+      - ca-certificates
+      - curl
+      - unzip
+      - tar
+
+# git clone https://github.com/microsoft/vcpkg on directory ./vcpkg/bootstrap-vcpkg.sh
+- name: Download VCPKG
+  git:
+    repo: https://github.com/microsoft/vcpkg.git
+
+- name: Execute vcpkg.sh
+  shell: /home/otsmanager/vcpkg/bootstrap-vcpkg.sh
 
 - name: Install systemd service for TFS
   template:
@@ -117,8 +131,14 @@
   become: true
   become_user: otsmanager
 
+- name: Cmake vcpkg.cmake
+  command: cmake -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake ..
+  tags: compile
+  become: true
+  become_user: otsmanager
+
 - name: Compile forgottenserver source
-  command: make -j2
+  command: make -j`nproc`
   args:
     chdir: /home/otsmanager/forgottenserver/build
   tags: compile

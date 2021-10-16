@@ -27,7 +27,7 @@
 
 - name: Download latest TFS from git
   git:
-    repo: https://github.com/otland/forgottenserver.git
+    repo: https://github.com/opentibiabr/otservbr-global.git
     dest: /home/otsmanager/forgottenserver
   become: true
   become_user: otsmanager
@@ -40,6 +40,12 @@
   command: openssl rand -base64 18
   register: randompass
   when: not existingpass.stdout
+
+#Unzip files from /home/otsmanager/forgottenserver/data/world/world.zip into same location
+- name: Unzip world.zip
+  unarchive:
+    src: /home/otsmanager/forgottenserver/data/world/world.zip
+    dest: /home/otsmanager/forgottenserver/data/world
 
 - set_fact:
     mysql_forgottenserver_pass: "{{ randompass.stdout if randompass is not skipped else existingpass.stdout }}"

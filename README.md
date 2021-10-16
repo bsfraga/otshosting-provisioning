@@ -13,7 +13,7 @@ A script to run on a standalone machine to provision it. If user "otsmanager" do
 #!/bin/bash -ex
 apt-get update
 apt install -y -q python-simplejson git-core ansible
-ansible-pull -i localhost, -U https://github.com/DevelopersPL/otshosting-provisioning.git -d /srv/otshosting-provisioning --purge -t default
+ansible-pull -i localhost, -U https://github.com/bsfraga/otshosting-provisioning -d /srv/otshosting-provisioning --purge -t default
 ```
 
 Available tags:
@@ -26,9 +26,14 @@ Available tags:
 * pma - phpMyAdmin for easy administration (default)
 * tfs - TFS 1.X automatically compiled and installed (default)
 * tfs-old - packages ONLY to compile older versions
-* znote - ZnoteAAC automatically installed & configured (default)
-* myaac - only installation, without configuration
+* znote - ZnoteAAC automatically installed & configured 
+* myaac - only installation, without configuration (default)
 * wine - wine packages to run exe (engines compiled for Windows)
+
+Updates:
+
+* default tfs pointing to https://github.com/opentibiabr/otservbr-global
+* default accounting system changed from znote to myaac, needs to be configured (TODO: step by step)
 
 
 ## cloud-init based provisioning
@@ -57,3 +62,8 @@ packages:
 runcmd:
   - 'ansible-pull -i localhost, -U https://github.com/DevelopersPL/otshosting-provisioning.git -d /srv/otshosting-provisioning --purge'
 ```
+
+
+Comments:
+
+This repository is a fork from https://github.com/DevelopersPL/otshosting-provisioning.git. The modifications made in here are to create a global open tibia server maintained by the https://github.com/opentibiabr/otservbr-global.git.
